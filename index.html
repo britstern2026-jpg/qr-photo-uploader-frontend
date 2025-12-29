@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Photo Uploader</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>QR Photo Uploader</h1>
+
+    <label>Name (optional)</label>
+    <input id="nameInput" placeholder="e.g. brit" />
+
+    <label>Take a photo</label>
+    <input id="photoInput" type="file" accept="image/*" capture="environment" />
+
+    <img id="preview" class="preview" />
+
+    <button id="uploadBtn">Upload</button>
+
+    <p id="status"></p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
