@@ -20,17 +20,18 @@
         <small class="hint">Used in the filename.</small>
       </div>
 
-      <!-- Nice iPhone-friendly camera button -->
       <div class="field">
         <label>Photo</label>
 
+        <!-- The real file input -->
         <input id="photoInput" type="file" accept="image/*" capture="environment" />
 
-        <button id="takePhotoBtn" class="btn secondary" type="button">
+        <!-- iOS-safe trigger: label acts like a real click -->
+        <label for="photoInput" class="btn secondary">
           📷 Take / Choose Photo
-        </button>
+        </label>
 
-        <small class="hint">On iPhone, this opens the camera or photo library.</small>
+        <small class="hint">On iPhone, this opens camera or photo library.</small>
       </div>
 
       <div class="previewWrap">
@@ -51,12 +52,5 @@
   </main>
 
   <script src="app.js"></script>
-
-  <script>
-    // Make file input feel like a clean button on iPhone
-    const takeBtn = document.getElementById("takePhotoBtn");
-    const input = document.getElementById("photoInput");
-    takeBtn.addEventListener("click", () => input.click());
-  </script>
 </body>
 </html>
