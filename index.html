@@ -11,19 +11,26 @@
     <section class="card">
       <header class="header">
         <h1>QR Photo Uploader</h1>
-        <p class="subtitle">Take a photo and upload it in one tap.</p>
+        <p class="subtitle">Take a photo and upload it.</p>
       </header>
 
       <div class="field">
         <label for="nameInput">Name (optional)</label>
         <input id="nameInput" type="text" placeholder="e.g. brit" autocomplete="off" />
-        <small class="hint">We’ll use this as part of the filename.</small>
+        <small class="hint">Used in the filename.</small>
       </div>
 
+      <!-- Nice iPhone-friendly camera button -->
       <div class="field">
-        <label for="photoInput">Take a photo</label>
+        <label>Photo</label>
+
         <input id="photoInput" type="file" accept="image/*" capture="environment" />
-        <small class="hint">On mobile this should open the camera.</small>
+
+        <button id="takePhotoBtn" class="btn secondary" type="button">
+          📷 Take / Choose Photo
+        </button>
+
+        <small class="hint">On iPhone, this opens the camera or photo library.</small>
       </div>
 
       <div class="previewWrap">
@@ -38,11 +45,18 @@
       <p id="status" class="status"></p>
 
       <footer class="footer">
-        <p class="tiny">Tip: If the camera doesn’t open, tap the file picker and choose “Camera”.</p>
+        <p class="tiny">If camera doesn’t open, choose “Camera” from the options.</p>
       </footer>
     </section>
   </main>
 
   <script src="app.js"></script>
+
+  <script>
+    // Make file input feel like a clean button on iPhone
+    const takeBtn = document.getElementById("takePhotoBtn");
+    const input = document.getElementById("photoInput");
+    takeBtn.addEventListener("click", () => input.click());
+  </script>
 </body>
 </html>

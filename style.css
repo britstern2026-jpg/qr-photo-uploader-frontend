@@ -7,7 +7,8 @@
   --muted: rgba(255, 255, 255, 0.72);
   --hint: rgba(255, 255, 255, 0.55);
   --accent: #7c5cff;
-  --accent2: #22c55e;
+  --accentBlue: #3b82f6;
+  --success: #22c55e;
   --danger: #ef4444;
   --shadow: 0 20px 60px rgba(0,0,0,0.45);
   --radius: 18px;
@@ -15,29 +16,35 @@
 
 * { box-sizing: border-box; }
 
-html, body {
-  height: 100%;
-}
+html, body { height: 100%; }
 
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: var(--text);
-  background: radial-gradient(1200px 800px at 20% 0%, #22306a 0%, transparent 60%),
-              radial-gradient(1000px 700px at 100% 30%, #5a2f79 0%, transparent 55%),
-              linear-gradient(180deg, var(--bg1), var(--bg2));
-  padding: 24px 16px;
+
+  /* iPhone safe-area support */
+  padding: calc(18px + env(safe-area-inset-top))
+           calc(14px + env(safe-area-inset-right))
+           calc(18px + env(safe-area-inset-bottom))
+           calc(14px + env(safe-area-inset-left));
+
+  background:
+    radial-gradient(1200px 800px at 20% 0%, #22306a 0%, transparent 60%),
+    radial-gradient(1000px 700px at 100% 30%, #5a2f79 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
+/* Fix Safari viewport height jump */
 .page {
-  min-height: 100%;
+  min-height: 100svh;
   display: grid;
   place-items: center;
 }
 
 .card {
   width: 100%;
-  max-width: 460px;
+  max-width: 480px;
   background: var(--card);
   border: 1px solid var(--cardBorder);
   border-radius: var(--radius);
@@ -70,20 +77,18 @@ label {
   color: var(--muted);
 }
 
-input[type="text"],
-input[type="file"] {
+input[type="text"] {
   width: 100%;
   border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.14);
   background: rgba(0,0,0,0.18);
   color: var(--text);
-  padding: 12px 12px;
-  font-size: 16px;
+  padding: 14px 12px;
+  font-size: 16px; /* prevents iPhone zoom on focus */
   outline: none;
 }
 
-input[type="text"]:focus,
-input[type="file"]:focus {
+input[type="text"]:focus {
   border-color: rgba(124, 92, 255, 0.65);
   box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.18);
 }
@@ -94,30 +99,23 @@ input[type="file"]:focus {
   line-height: 1.35;
 }
 
-.previewWrap {
-  margin-top: 12px;
+/* Hide the ugly file input */
+input[type="file"] {
+  position: absolute;
+  left: -9999px;
 }
 
-.preview {
-  width: 100%;
-  display: none;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.2);
-  max-height: 340px;
-  object-fit: cover;
-}
-
+/* Buttons */
 .btn {
-  margin-top: 14px;
+  margin-top: 10px;
   width: 100%;
   border: none;
   border-radius: 14px;
-  padding: 14px 14px;
+  padding: 16px 14px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  background: linear-gradient(135deg, var(--accent), var(--accentBlue));
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -126,13 +124,17 @@ input[type="file"]:focus {
   transition: transform 0.06s ease, opacity 0.2s ease;
 }
 
-.btn:active {
-  transform: scale(0.99);
-}
+.btn:active { transform: scale(0.99); }
 
 .btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.btn.secondary {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: var(--text);
 }
 
 .spinner {
@@ -145,8 +147,18 @@ input[type="file"]:focus {
   animation: spin 0.9s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.previewWrap { margin-top: 12px; }
+
+.preview {
+  width: 100%;
+  display: none;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.2);
+  max-height: 340px;
+  object-fit: cover;
 }
 
 .status {
@@ -158,13 +170,8 @@ input[type="file"]:focus {
   word-break: break-word;
 }
 
-.status.ok {
-  color: rgba(34, 197, 94, 0.95);
-}
-
-.status.err {
-  color: rgba(239, 68, 68, 0.95);
-}
+.status.ok { color: rgba(34, 197, 94, 0.95); }
+.status.err { color: rgba(239, 68, 68, 0.95); }
 
 .footer {
   margin-top: 16px;
@@ -179,9 +186,9 @@ input[type="file"]:focus {
   line-height: 1.35;
 }
 
-/* Mobile comfort */
+/* Extra comfort on small iPhones */
 @media (max-width: 420px) {
-  body { padding: 18px 12px; }
   .card { padding: 16px; }
   .header h1 { font-size: 22px; }
+  .btn { padding: 18px 14px; }
 }
