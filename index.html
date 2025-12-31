@@ -2,26 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>QR Photo Uploader</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="container">
-    <h1>QR Photo Uploader</h1>
+  <main class="page">
+    <section class="card">
+      <header class="header">
+        <h1>QR Photo Uploader</h1>
+        <p class="subtitle">Take a photo and upload it in one tap.</p>
+      </header>
 
-    <label>Name (optional)</label>
-    <input id="nameInput" placeholder="e.g. brit" />
+      <div class="field">
+        <label for="nameInput">Name (optional)</label>
+        <input id="nameInput" type="text" placeholder="e.g. brit" autocomplete="off" />
+        <small class="hint">We’ll use this as part of the filename.</small>
+      </div>
 
-    <label>Take a photo</label>
-    <input id="photoInput" type="file" accept="image/*" capture="environment" />
+      <div class="field">
+        <label for="photoInput">Take a photo</label>
+        <input id="photoInput" type="file" accept="image/*" capture="environment" />
+        <small class="hint">On mobile this should open the camera.</small>
+      </div>
 
-    <img id="preview" class="preview" />
+      <div class="previewWrap">
+        <img id="preview" class="preview" alt="Preview"/>
+      </div>
 
-    <button id="uploadBtn">Upload</button>
+      <button id="uploadBtn" class="btn" disabled>
+        <span class="btnText">Upload</span>
+        <span class="spinner" aria-hidden="true"></span>
+      </button>
 
-    <p id="status"></p>
-  </div>
+      <p id="status" class="status"></p>
+
+      <footer class="footer">
+        <p class="tiny">Tip: If the camera doesn’t open, tap the file picker and choose “Camera”.</p>
+      </footer>
+    </section>
+  </main>
 
   <script src="app.js"></script>
 </body>
