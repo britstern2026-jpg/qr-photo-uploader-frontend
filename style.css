@@ -8,14 +8,11 @@
   --hint: rgba(255, 255, 255, 0.55);
   --accent: #7c5cff;
   --accentBlue: #3b82f6;
-  --success: #22c55e;
-  --danger: #ef4444;
   --shadow: 0 20px 60px rgba(0,0,0,0.45);
   --radius: 18px;
 }
 
 * { box-sizing: border-box; }
-
 html, body { height: 100%; }
 
 body {
@@ -23,7 +20,6 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: var(--text);
 
-  /* iPhone safe-area support */
   padding: calc(18px + env(safe-area-inset-top))
            calc(14px + env(safe-area-inset-right))
            calc(18px + env(safe-area-inset-bottom))
@@ -35,7 +31,6 @@ body {
     linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-/* Fix Safari viewport height jump */
 .page {
   min-height: 100svh;
   display: grid;
@@ -56,14 +51,12 @@ body {
 .header h1 {
   margin: 0 0 6px;
   font-size: 24px;
-  letter-spacing: 0.2px;
 }
 
 .subtitle {
   margin: 0 0 14px;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.4;
 }
 
 .field {
@@ -84,7 +77,7 @@ input[type="text"] {
   background: rgba(0,0,0,0.18);
   color: var(--text);
   padding: 14px 12px;
-  font-size: 16px; /* prevents iPhone zoom on focus */
+  font-size: 16px; /* prevents iPhone zoom */
   outline: none;
 }
 
@@ -93,28 +86,49 @@ input[type="text"]:focus {
   box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.18);
 }
 
+/* ✅ iPhone-friendly file input styled like a button */
+.fileBtn {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.12);
+  color: var(--text);
+  padding: 16px 14px;
+  font-size: 16px;
+}
+
+/* Make the inner iOS button look decent too */
+.fileBtn::-webkit-file-upload-button {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-right: 10px;
+  background: rgba(255,255,255,0.20);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .hint {
   color: var(--hint);
   font-size: 12px;
   line-height: 1.35;
 }
 
-/* Hide the ugly file input */
-input[type="file"] {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.previewWrap { margin-top: 12px; }
+
+.preview {
+  width: 100%;
+  display: none;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.2);
+  max-height: 340px;
+  object-fit: cover;
 }
 
-/* Buttons */
 .btn {
-  margin-top: 10px;
+  margin-top: 14px;
   width: 100%;
   border: none;
   border-radius: 14px;
@@ -138,12 +152,6 @@ input[type="file"] {
   cursor: not-allowed;
 }
 
-.btn.secondary {
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.18);
-  color: var(--text);
-}
-
 .spinner {
   width: 16px;
   height: 16px;
@@ -155,18 +163,6 @@ input[type="file"] {
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.previewWrap { margin-top: 12px; }
-
-.preview {
-  width: 100%;
-  display: none;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.2);
-  max-height: 340px;
-  object-fit: cover;
-}
 
 .status {
   margin: 14px 0 0;
@@ -191,11 +187,4 @@ input[type="file"] {
   color: var(--hint);
   font-size: 12px;
   line-height: 1.35;
-}
-
-/* Extra comfort on small iPhones */
-@media (max-width: 420px) {
-  .card { padding: 16px; }
-  .header h1 { font-size: 22px; }
-  .btn { padding: 18px 14px; }
 }

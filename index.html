@@ -21,17 +21,13 @@
       </div>
 
       <div class="field">
-        <label>Photo</label>
+        <label for="photoInput">Photo</label>
 
-        <!-- The real file input -->
-        <input id="photoInput" type="file" accept="image/*" capture="environment" />
+        <!-- ✅ Most reliable on iPhone: NO capture attribute -->
+        <!-- ✅ Input is visible (but styled nicely) -->
+        <input id="photoInput" class="fileBtn" type="file" accept="image/*" />
 
-        <!-- iOS-safe trigger: label acts like a real click -->
-        <label for="photoInput" class="btn secondary">
-          📷 Take / Choose Photo
-        </label>
-
-        <small class="hint">On iPhone, this opens camera or photo library.</small>
+        <small class="hint">Choose “Camera” to take a new photo.</small>
       </div>
 
       <div class="previewWrap">
@@ -46,7 +42,7 @@
       <p id="status" class="status"></p>
 
       <footer class="footer">
-        <p class="tiny">If camera doesn’t open, choose “Camera” from the options.</p>
+        <p class="tiny">If you want the camera: pick the file and choose “Take Photo”.</p>
       </footer>
     </section>
   </main>
