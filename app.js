@@ -34,27 +34,41 @@ function resetForm() {
   uploadBtn.disabled = true;
 }
 
-photoInput.addEventListener("change", () => {
-  selectedFile = photoInput.files?.[0] || null;
+function onFilePicked() {
+  // iOS sometimes fills files a moment after the event fires
+  const f = photoInput.files && photoInput.files[0] ? photoInput.files[0] : null;
+  selectedFile = f;
 
   if (!selectedFile) {
-    resetForm();
-    setStatus("");
+    uploadBtn.disabled = true;
+    preview.style.display = "none";
     return;
   }
 
   preview.src = URL.createObjectURL(selectedFile);
   preview.style.display = "block";
   uploadBtn.disabled = false;
-
   setStatus("");
+}
+
+// ✅ Handle iOS weirdness by listening to BOTH events
+photoInput.addEventListener("change", () => {
+  onFilePicked();
+  setTimeout(onFilePicked, 50); // fallback tick
+});
+
+photoInput.addEventListener("input", () => {
+  onFilePicked();
+  setTimeout(onFilePicked, 50);
 });
 
 uploadBtn.addEventListener("click", async () => {
   if (uploading) return;
 
+  // safety check (also helps debug)
   if (!selectedFile) {
-    setStatus("❌ Please take/select a photo first.", "err");
+    setStatus("❌ No photo detected. Try choosing the photo again.", "err");
+    uploadBtn.disabled = true;
     return;
   }
 
@@ -82,13 +96,10 @@ uploadBtn.addEventListener("click", async () => {
 
     setStatus(`✅ Uploaded successfully! (${data.objectName})`, "ok");
 
-    // Auto reset so users can take another photo quickly
+    // reset so users can do another photo
     resetForm();
 
-    // Keep status visible a moment, then clear (optional)
-    setTimeout(() => {
-      setStatus("");
-    }, 3500);
+    setTimeout(() => setStatus(""), 3500);
   } catch (err) {
     setStatus(`❌ Error: ${err.message}`, "err");
   } finally {
