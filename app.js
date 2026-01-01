@@ -23,7 +23,7 @@ function setUploading(isUploading) {
   uploading = isUploading;
   uploadBtn.disabled = isUploading || !selectedFile;
   spinner.style.display = isUploading ? "inline-block" : "none";
-  btnText.textContent = isUploading ? "Uploading..." : "Upload";
+  btnText.textContent = isUploading ? "מעלה..." : "העלאה";
 }
 
 function resetForm() {
@@ -35,7 +35,6 @@ function resetForm() {
 }
 
 function onFilePicked() {
-  // iOS sometimes fills files a moment after the event fires
   const f = photoInput.files && photoInput.files[0] ? photoInput.files[0] : null;
   selectedFile = f;
 
@@ -51,10 +50,10 @@ function onFilePicked() {
   setStatus("");
 }
 
-// ✅ Handle iOS weirdness by listening to BOTH events
+// extra reliable for iPhone
 photoInput.addEventListener("change", () => {
   onFilePicked();
-  setTimeout(onFilePicked, 50); // fallback tick
+  setTimeout(onFilePicked, 50);
 });
 
 photoInput.addEventListener("input", () => {
@@ -65,15 +64,14 @@ photoInput.addEventListener("input", () => {
 uploadBtn.addEventListener("click", async () => {
   if (uploading) return;
 
-  // safety check (also helps debug)
   if (!selectedFile) {
-    setStatus("❌ No photo detected. Try choosing the photo again.", "err");
+    setStatus("❌ לא נבחרה תמונה. נסו שוב.", "err");
     uploadBtn.disabled = true;
     return;
   }
 
   const rawName = (nameInput.value || "").trim();
-  const safeName = rawName.length ? rawName : "photo";
+  const safeName = rawName.length ? rawName : "תמונה";
 
   const formData = new FormData();
   formData.append("photo", selectedFile);
@@ -81,7 +79,7 @@ uploadBtn.addEventListener("click", async () => {
 
   try {
     setUploading(true);
-    setStatus("Uploading...");
+    setStatus("מעלה...");
 
     const res = await fetch(`${BACKEND_URL}/upload`, {
       method: "POST",
@@ -89,19 +87,13 @@ uploadBtn.addEventListener("click", async () => {
     });
 
     const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Upload failed");
 
-    if (!res.ok) {
-      throw new Error(data.error || "Upload failed");
-    }
-
-    setStatus(`✅ Uploaded successfully! (${data.objectName})`, "ok");
-
-    // reset so users can do another photo
+    setStatus(`✅ הועלה בהצלחה! (${data.objectName})`, "ok");
     resetForm();
-
     setTimeout(() => setStatus(""), 3500);
   } catch (err) {
-    setStatus(`❌ Error: ${err.message}`, "err");
+    setStatus(`❌ שגיאה: ${err.message}`, "err");
   } finally {
     setUploading(false);
   }
