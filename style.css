@@ -13,7 +13,14 @@
 }
 
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+
+/* ✅ iPhone Chrome fix: prevent sideways scroll */
+html, body {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
 body {
   margin: 0;
@@ -26,15 +33,21 @@ body {
            calc(18px + env(safe-area-inset-bottom))
            calc(14px + env(safe-area-inset-left));
 
+  /* ✅ background-attachment scroll prevents iOS rendering overflow bugs */
+  background-attachment: scroll;
+
   background:
     radial-gradient(1200px 800px at 20% 0%, #22306a 0%, transparent 60%),
     radial-gradient(1000px 700px at 100% 30%, #5a2f79 0%, transparent 55%),
     linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-/* Safari/iOS viewport stability */
+/* ✅ Use svh + dvh fallback to avoid iOS address bar issues */
 .page {
+  width: 100%;
+  max-width: 100%;
   min-height: 100svh;
+  min-height: 100dvh;
   display: grid;
   place-items: center;
 }
