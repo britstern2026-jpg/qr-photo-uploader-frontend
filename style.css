@@ -285,3 +285,36 @@ label,
 .checkboxLabel {
   text-align: right;
 }
+
+/* =========================
+   ✅ Gallery
+   ========================= */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.galleryItem {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.18);
+}
+
+.galleryImg {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+@media (min-width: 520px) {
+  .galleryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .galleryImg {
+    height: 170px;
+  }
+}
