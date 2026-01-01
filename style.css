@@ -8,6 +8,8 @@
   --hint: rgba(255, 255, 255, 0.55);
   --accent: #7c5cff;
   --accentBlue: #3b82f6;
+  --success: #22c55e;
+  --danger: #ef4444;
   --shadow: 0 20px 60px rgba(0,0,0,0.45);
   --radius: 18px;
 }
@@ -20,6 +22,7 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: var(--text);
 
+  /* iPhone safe-area support */
   padding: calc(18px + env(safe-area-inset-top))
            calc(14px + env(safe-area-inset-right))
            calc(18px + env(safe-area-inset-bottom))
@@ -31,6 +34,7 @@ body {
     linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
+/* Fix Safari viewport height jump */
 .page {
   min-height: 100svh;
   display: grid;
@@ -51,12 +55,14 @@ body {
 .header h1 {
   margin: 0 0 6px;
   font-size: 24px;
+  letter-spacing: 0.2px;
 }
 
 .subtitle {
   margin: 0 0 14px;
   color: var(--muted);
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .field {
@@ -86,7 +92,7 @@ input[type="text"]:focus {
   box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.18);
 }
 
-/* ✅ iPhone-friendly file input styled like a button */
+/* iPhone-friendly visible file input styled like a button */
 .fileBtn {
   width: 100%;
   border-radius: 14px;
@@ -187,4 +193,20 @@ input[type="text"]:focus {
   color: var(--hint);
   font-size: 12px;
   line-height: 1.35;
+}
+
+/* Extra comfort on small iPhones */
+@media (max-width: 420px) {
+  .card { padding: 16px; }
+  .header h1 { font-size: 22px; }
+  .btn { padding: 18px 14px; }
+}
+
+/* =========================
+   Hebrew / RTL tweaks
+   ========================= */
+body { direction: rtl; }
+
+label, .hint, .subtitle, .status, .tiny {
+  text-align: right;
 }
