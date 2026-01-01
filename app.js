@@ -1,107 +1,84 @@
-const BACKEND_URL = "https://qr-photo-uploader-928035249768.me-west1.run.app";
-
-const nameInput = document.getElementById("nameInput");
 const photoInput = document.getElementById("photoInput");
-const fileNameEl = document.getElementById("fileName");
-const preview = document.getElementById("preview");
+const pickBtn = document.getElementById("pickBtn");
 const uploadBtn = document.getElementById("uploadBtn");
+const preview = document.getElementById("preview");
 const statusEl = document.getElementById("status");
-
-const btnText = uploadBtn.querySelector(".btnText");
-const spinner = uploadBtn.querySelector(".spinner");
+const nameInput = document.getElementById("nameInput");
+const fileNameEl = document.getElementById("fileName");
+const publicCheckbox = document.getElementById("publicCheckbox");
 
 let selectedFile = null;
-let uploading = false;
 
-function setStatus(msg, type = "") {
-  statusEl.textContent = msg || "";
-  statusEl.classList.remove("ok", "err");
-  if (type === "ok") statusEl.classList.add("ok");
-  if (type === "err") statusEl.classList.add("err");
-}
+// ✅ Cloud Run backend
+const BACKEND_URL = "https://qr-photo-uploader-928035249768.me-west1.run.app";
 
-function setUploading(isUploading) {
-  uploading = isUploading;
-  uploadBtn.disabled = isUploading || !selectedFile;
-  spinner.style.display = isUploading ? "inline-block" : "none";
-  btnText.textContent = isUploading ? "מעלה..." : "העלאה";
-}
+// ✅ Open file picker / camera
+pickBtn.addEventListener("click", () => {
+  photoInput.click();
+});
 
-function updateUIFromFile() {
-  if (!selectedFile) {
-    fileNameEl.textContent = "לא נבחרה תמונה";
-    preview.style.display = "none";
-    uploadBtn.disabled = true;
-    return;
-  }
+// ✅ iPhone Chrome sometimes needs a small delay
+photoInput.addEventListener("change", async () => {
+  statusEl.textContent = "";
+  statusEl.className = "status";
 
-  fileNameEl.textContent = selectedFile.name || "נבחרה תמונה";
+  const file = photoInput.files && photoInput.files[0];
+  if (!file) return;
+
+  // iOS/Chrome quirk: wait a tick so file is fully available
+  await new Promise((r) => setTimeout(r, 250));
+
+  selectedFile = file;
+  fileNameEl.textContent = `נבחר: ${file.name}`;
+
   preview.src = URL.createObjectURL(selectedFile);
   preview.style.display = "block";
+
   uploadBtn.disabled = false;
-  setStatus("");
-}
-
-/**
- * iPhone Chrome reliability trick:
- * Sometimes the file appears slightly after the change event.
- */
-function readFileFromInput() {
-  selectedFile = photoInput.files && photoInput.files[0] ? photoInput.files[0] : null;
-  updateUIFromFile();
-}
-
-photoInput.addEventListener("change", () => {
-  readFileFromInput();
-  setTimeout(readFileFromInput, 80);
-  setTimeout(readFileFromInput, 200);
 });
 
-photoInput.addEventListener("input", () => {
-  readFileFromInput();
-  setTimeout(readFileFromInput, 80);
-  setTimeout(readFileFromInput, 200);
-});
-
+// ✅ Upload
 uploadBtn.addEventListener("click", async () => {
-  if (uploading) return;
+  if (!selectedFile) return;
 
-  if (!selectedFile) {
-    setStatus("❌ לא נבחרה תמונה. נסו לבחור שוב.", "err");
-    return;
-  }
-
-  const rawName = (nameInput.value || "").trim();
-  const safeName = rawName.length ? rawName : "תמונה";
+  uploadBtn.disabled = true;
+  statusEl.textContent = "מעלה...";
+  statusEl.className = "status";
+  const spinner = document.querySelector(".spinner");
+  if (spinner) spinner.style.display = "inline-block";
 
   const formData = new FormData();
   formData.append("photo", selectedFile);
-  formData.append("name", safeName);
+  formData.append("name", nameInput.value.trim());
+
+  // ✅ NEW: visibility field
+  // checked = public (everyone), unchecked = private (event owner)
+  formData.append("visibility", publicCheckbox.checked ? "public" : "private");
 
   try {
-    setUploading(true);
-    setStatus("מעלה...");
-
     const res = await fetch(`${BACKEND_URL}/upload`, {
       method: "POST",
-      body: formData,
+      body: formData
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "העלאה נכשלה");
+    if (!res.ok) throw new Error(data.error || "Upload failed");
 
-    setStatus(`✅ הועלה בהצלחה: ${data.objectName}`, "ok");
+    statusEl.textContent = `✅ הועלה בהצלחה: ${data.objectName}`;
+    statusEl.className = "status ok";
 
-    // Reset for next upload
+    // reset UI
     selectedFile = null;
     photoInput.value = "";
+    fileNameEl.textContent = "";
+    preview.style.display = "none";
     nameInput.value = "";
-    updateUIFromFile();
-
-    setTimeout(() => setStatus(""), 3500);
+    publicCheckbox.checked = true; // ✅ reset default to everyone
   } catch (err) {
-    setStatus(`❌ שגיאה: ${err.message}`, "err");
+    statusEl.textContent = `❌ שגיאה: ${err.message}`;
+    statusEl.className = "status err";
+    uploadBtn.disabled = false;
   } finally {
-    setUploading(false);
+    if (spinner) spinner.style.display = "none";
   }
 });

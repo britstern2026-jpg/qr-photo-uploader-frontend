@@ -6,39 +6,48 @@
   <title>העלאת תמונה</title>
   <link rel="stylesheet" href="style.css?v=3"/>
 </head>
-
 <body>
   <main class="page">
     <section class="card">
-
       <header class="header">
-        <h1>הברית של ✨</h1>
+        <h1>הברית של **</h1>
         <p class="subtitle">צלמו תמונה והעלו אותה שכולם יהנו ממנה.</p>
       </header>
 
       <div class="field">
         <label for="nameInput">שם (לא חובה)</label>
-        <input
-          id="nameInput"
-          type="text"
-          placeholder="שמך כאן"
-          autocomplete="off"
-        />
+        <input id="nameInput" type="text" placeholder="שמך כאן" autocomplete="off" />
         <small class="hint">השם ישולב בשם הקובץ.</small>
       </div>
 
+      <!-- ✅ NEW: visibility checkbox -->
       <div class="field">
-        <label>צילום / בחירת תמונה</label>
+        <label>מי יכול לראות?</label>
 
-        <!-- ✅ Real file input: must exist for iPhone Chrome -->
-        <input id="photoInput" type="file" accept="image/*" class="realFileInput" />
+        <div class="checkboxRow">
+          <input id="publicCheckbox" type="checkbox" checked />
+          <label for="publicCheckbox" class="checkboxLabel">
+            כולם (הצג בגלריה)
+          </label>
+        </div>
 
-        <!-- ✅ Most reliable on iOS: use LABEL styled like a button -->
-        <label for="photoInput" id="pickBtn" class="btnSecondary">
-          לבחור / לצלם תמונה
-        </label>
+        <small class="hint">
+          אם לא מסומן — התמונה תישמר רק לבעל האירוע ולא תופיע בגלריה.
+        </small>
+      </div>
 
-        <div id="fileName" class="fileName">לא נבחרה תמונה</div>
+      <div class="field">
+        <label for="photoInput">צילום / בחירת תמונה</label>
+
+        <!-- hidden real input -->
+        <input id="photoInput" class="realFileInput" type="file" accept="image/*" />
+
+        <!-- custom visible button -->
+        <button id="pickBtn" class="btnSecondary" type="button">
+          בחירת תמונה / מצלמה
+        </button>
+
+        <div id="fileName" class="fileName"></div>
 
         <small class="hint">כדי לצלם: בחרו “Camera / מצלמה”.</small>
       </div>
@@ -56,12 +65,11 @@
 
       <footer class="footer">
         <p class="tiny">טיפ: אם המצלמה לא נפתחת, בחרו “מצלמה” מתוך האפשרויות.</p>
+        <p class="tiny">גרסה:v5</p>
       </footer>
-
     </section>
   </main>
 
   <script src="app.js?v=3"></script>
-  <p class="tiny">גרסה: v4</p>
 </body>
 </html>

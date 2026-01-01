@@ -120,6 +120,33 @@ input[type="text"]:focus {
   line-height: 1.35;
 }
 
+/* =========================
+   ✅ Checkbox (Visibility)
+   ========================= */
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  background: rgba(0,0,0,0.16);
+}
+
+.checkboxRow input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent); /* modern browsers */
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  font-size: 15px;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+}
+
 /* ✅ Keep file input present for iOS, but invisible */
 .realFileInput {
   position: absolute;
@@ -130,6 +157,7 @@ input[type="text"]:focus {
   pointer-events: none;
 }
 
+/* Custom secondary button */
 .btnSecondary {
   width: 100%;
   max-width: 100%;
@@ -253,6 +281,7 @@ label,
 .hint,
 .fileName,
 .status,
-.tiny {
+.tiny,
+.checkboxLabel {
   text-align: right;
 }
