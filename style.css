@@ -287,34 +287,66 @@ label,
 }
 
 /* =========================
-   ✅ Gallery
-   ========================= */
+   GALLERY GRID
+========================= */
+
 .galleryGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.galleryItem {
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.18);
-}
-
-.galleryImg {
   width: 100%;
-  height: 160px;
-  object-fit: cover;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+/* Each card is a clickable tile */
+.photoCard {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;          /* ✅ square tiles */
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-decoration: none;
   display: block;
 }
 
-@media (min-width: 520px) {
-  .galleryGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .galleryImg {
-    height: 170px;
+/* Image fills the entire tile */
+.photoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;            /* ✅ no distortion, crops nicely */
+  display: block;
+}
+
+/* Filename overlay instead of pushing layout */
+.photoMeta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.9);
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0)
+  );
+
+  text-align: center;
+
+  direction: ltr;                /* ✅ filenames look better */
+  word-break: break-word;
+}
+
+/* Slight hover effect (desktop only) */
+@media (hover: hover) {
+  .photoCard:hover {
+    transform: translateY(-2px);
+    transition: 120ms ease;
   }
 }
