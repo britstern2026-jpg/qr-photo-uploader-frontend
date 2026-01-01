@@ -6,25 +6,40 @@
   <title>העלאת תמונה</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
+
 <body>
   <main class="page">
     <section class="card">
+
       <header class="header">
-        <h1>הברית של **</h1>
+        <h1>הברית של ✨</h1>
         <p class="subtitle">צלמו תמונה והעלו אותה שכולם יהנו ממנה.</p>
       </header>
 
       <div class="field">
         <label for="nameInput">שם (לא חובה)</label>
-        <input id="nameInput" type="text" placeholder="שמך כאן" autocomplete="off" />
+        <input
+          id="nameInput"
+          type="text"
+          placeholder="שמך כאן"
+          autocomplete="off"
+        />
         <small class="hint">השם ישולב בשם הקובץ.</small>
       </div>
 
       <div class="field">
-        <label for="photoInput">צילום / בחירת תמונה</label>
+        <label>צילום / בחירת תמונה</label>
 
-        <!-- הכי יציב באייפון: בלי capture -->
-        <input id="photoInput" class="fileBtn" type="file" accept="image/*" />
+        <!-- Hidden file input (best for iPhone Chrome) -->
+        <input id="photoInput" type="file" accept="image/*" hidden />
+
+        <!-- Custom button -->
+        <button id="pickBtn" class="btnSecondary" type="button">
+          לבחור / לצלם תמונה
+        </button>
+
+        <!-- Filename display -->
+        <div id="fileName" class="fileName">לא נבחרה תמונה</div>
 
         <small class="hint">כדי לצלם: בחרו “Camera / מצלמה”.</small>
       </div>
@@ -43,6 +58,7 @@
       <footer class="footer">
         <p class="tiny">טיפ: אם המצלמה לא נפתחת, בחרו “מצלמה” מתוך האפשרויות.</p>
       </footer>
+
     </section>
   </main>
 

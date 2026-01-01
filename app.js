@@ -1,7 +1,10 @@
+// ✅ Your Cloud Run backend
 const BACKEND_URL = "https://qr-photo-uploader-928035249768.me-west1.run.app";
 
 const nameInput = document.getElementById("nameInput");
 const photoInput = document.getElementById("photoInput");
+const pickBtn = document.getElementById("pickBtn");
+const fileNameEl = document.getElementById("fileName");
 const preview = document.getElementById("preview");
 const uploadBtn = document.getElementById("uploadBtn");
 const statusEl = document.getElementById("status");
@@ -26,47 +29,41 @@ function setUploading(isUploading) {
   btnText.textContent = isUploading ? "מעלה..." : "העלאה";
 }
 
-function resetForm() {
-  selectedFile = null;
-  photoInput.value = "";
-  preview.src = "";
-  preview.style.display = "none";
-  uploadBtn.disabled = true;
-}
-
-function onFilePicked() {
-  const f = photoInput.files && photoInput.files[0] ? photoInput.files[0] : null;
-  selectedFile = f;
-
+function updateUIFromFile() {
   if (!selectedFile) {
-    uploadBtn.disabled = true;
+    fileNameEl.textContent = "לא נבחרה תמונה";
     preview.style.display = "none";
+    uploadBtn.disabled = true;
     return;
   }
 
+  fileNameEl.textContent = selectedFile.name || "נבחרה תמונה";
   preview.src = URL.createObjectURL(selectedFile);
   preview.style.display = "block";
   uploadBtn.disabled = false;
-  setStatus("");
 }
 
-// extra reliable for iPhone
-photoInput.addEventListener("change", () => {
-  onFilePicked();
-  setTimeout(onFilePicked, 50);
+// Open picker
+pickBtn.addEventListener("click", () => {
+  photoInput.click();
 });
 
-photoInput.addEventListener("input", () => {
-  onFilePicked();
-  setTimeout(onFilePicked, 50);
+// iPhone Chrome reliability: re-check file after change
+photoInput.addEventListener("change", () => {
+  selectedFile = photoInput.files && photoInput.files[0] ? photoInput.files[0] : null;
+  updateUIFromFile();
+
+  setTimeout(() => {
+    selectedFile = photoInput.files && photoInput.files[0] ? photoInput.files[0] : null;
+    updateUIFromFile();
+  }, 100);
 });
 
 uploadBtn.addEventListener("click", async () => {
   if (uploading) return;
 
   if (!selectedFile) {
-    setStatus("❌ לא נבחרה תמונה. נסו שוב.", "err");
-    uploadBtn.disabled = true;
+    setStatus("❌ לא נבחרה תמונה. נסו לבחור שוב.", "err");
     return;
   }
 
@@ -87,11 +84,15 @@ uploadBtn.addEventListener("click", async () => {
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Upload failed");
+    if (!res.ok) throw new Error(data.error || "העלאה נכשלה");
 
-    setStatus(`✅ הועלה בהצלחה! (${data.objectName})`, "ok");
-    resetForm();
-    setTimeout(() => setStatus(""), 3500);
+    setStatus(`✅ הועלה בהצלחה: ${data.objectName}`, "ok");
+
+    // Reset
+    selectedFile = null;
+    photoInput.value = "";
+    nameInput.value = "";
+    updateUIFromFile();
   } catch (err) {
     setStatus(`❌ שגיאה: ${err.message}`, "err");
   } finally {
