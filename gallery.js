@@ -1,50 +1,63 @@
+// ✅ Change this if Cloud Run URL changes
 const BACKEND_URL = "https://qr-photo-uploader-928035249768.me-west1.run.app";
 
 const statusEl = document.getElementById("galleryStatus");
 const gridEl = document.getElementById("galleryGrid");
+const countEl = document.getElementById("galleryCount");
 
-function setStatus(msg, type = "") {
-  statusEl.textContent = msg || "";
-  statusEl.classList.remove("ok", "err");
-  if (type === "ok") statusEl.classList.add("ok");
-  if (type === "err") statusEl.classList.add("err");
-}
+async function loadPhotos() {
+  statusEl.textContent = "טוען תמונות...";
+  gridEl.innerHTML = "";
+  countEl.textContent = "";
 
-async function loadGallery() {
   try {
-    setStatus("טוען תמונות...");
+    const res = await fetch(`${BACKEND_URL}/photos`, {
+      method: "GET",
+      headers: { "Accept": "application/json" }
+    });
 
-    const res = await fetch(`${BACKEND_URL}/photos`, { method: "GET" });
     const data = await res.json();
 
-    if (!res.ok) throw new Error(data.error || "שגיאה בטעינת גלריה");
+    if (!res.ok || !data.ok) {
+      throw new Error(data.error || "Failed to load gallery");
+    }
 
     const photos = data.photos || [];
-    if (!photos.length) {
-      setStatus("אין עדיין תמונות בגלריה.", "ok");
+    countEl.textContent = `✅ נמצאו ${photos.length} תמונות`;
+
+    if (photos.length === 0) {
+      statusEl.textContent = "אין תמונות להצגה כרגע.";
       return;
     }
 
-    setStatus(`✅ נמצאו ${photos.length} תמונות`, "ok");
+    statusEl.textContent = "";
 
-    gridEl.innerHTML = "";
-
-    for (const p of photos) {
-      const card = document.createElement("div");
-      card.className = "galleryItem";
+    photos.forEach((p) => {
+      const card = document.createElement("a");
+      card.className = "photoCard";
+      card.href = p.signedUrl;
+      card.target = "_blank";
+      card.rel = "noopener";
 
       const img = document.createElement("img");
-      img.src = p.url;
-      img.alt = p.name;
+      img.className = "photoImg";
       img.loading = "lazy";
-      img.className = "galleryImg";
+      img.alt = p.name;
+      img.src = p.signedUrl;
+
+      const meta = document.createElement("div");
+      meta.className = "photoMeta";
+      meta.textContent = p.name;
 
       card.appendChild(img);
+      card.appendChild(meta);
       gridEl.appendChild(card);
-    }
+    });
+
   } catch (err) {
-    setStatus(`❌ ${err.message}`, "err");
+    console.error(err);
+    statusEl.textContent = `❌ שגיאה: ${err.message}`;
   }
 }
 
-loadGallery();
+loadPhotos();
