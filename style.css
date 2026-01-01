@@ -8,8 +8,6 @@
   --hint: rgba(255, 255, 255, 0.55);
   --accent: #7c5cff;
   --accentBlue: #3b82f6;
-  --success: #22c55e;
-  --danger: #ef4444;
   --shadow: 0 20px 60px rgba(0,0,0,0.45);
   --radius: 18px;
 }
@@ -34,7 +32,7 @@ body {
     linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-/* Fix Safari viewport height jump */
+/* Safari/iOS viewport stability */
 .page {
   min-height: 100svh;
   display: grid;
@@ -92,33 +90,43 @@ input[type="text"]:focus {
   box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.18);
 }
 
-/* iPhone-friendly visible file input styled like a button */
-.fileBtn {
-  width: 100%;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.12);
-  color: var(--text);
-  padding: 16px 14px;
-  font-size: 16px;
-}
-
-/* Make the inner iOS button look decent too */
-.fileBtn::-webkit-file-upload-button {
-  border: none;
-  border-radius: 12px;
-  padding: 10px 12px;
-  margin-right: 10px;
-  background: rgba(255,255,255,0.20);
-  color: var(--text);
-  font-weight: 600;
-  cursor: pointer;
-}
-
 .hint {
   color: var(--hint);
   font-size: 12px;
   line-height: 1.35;
+}
+
+/* ✅ Keep file input "present" for iPhone Chrome, but invisible */
+.realFileInput {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Custom button (label styled as button) */
+.btnSecondary {
+  width: 100%;
+  border-radius: 14px;
+  padding: 14px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fileName {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--muted);
+  word-break: break-word;
 }
 
 .previewWrap { margin-top: 12px; }
@@ -140,7 +148,7 @@ input[type="text"]:focus {
   border-radius: 14px;
   padding: 16px 14px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   color: white;
   background: linear-gradient(135deg, var(--accent), var(--accentBlue));
   cursor: pointer;
@@ -195,37 +203,22 @@ input[type="text"]:focus {
   line-height: 1.35;
 }
 
-.btnSecondary {
-  width: 100%;
-  border-radius: 14px;
-  padding: 14px 14px;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.18);
-  cursor: pointer;
-}
-
-.fileName {
-  margin-top: 10px;
-  font-size: 14px;
-  color: var(--muted);
-  word-break: break-word;
-}
-
-/* Extra comfort on small iPhones */
+/* Small iPhones */
 @media (max-width: 420px) {
   .card { padding: 16px; }
   .header h1 { font-size: 22px; }
   .btn { padding: 18px 14px; }
 }
 
-/* =========================
-   Hebrew / RTL tweaks
-   ========================= */
+/* RTL alignment */
 body { direction: rtl; }
 
-label, .hint, .subtitle, .status, .tiny {
+.header h1,
+.subtitle,
+label,
+.hint,
+.fileName,
+.status,
+.tiny {
   text-align: right;
 }

@@ -1,9 +1,7 @@
-// ✅ Your Cloud Run backend
 const BACKEND_URL = "https://qr-photo-uploader-928035249768.me-west1.run.app";
 
 const nameInput = document.getElementById("nameInput");
 const photoInput = document.getElementById("photoInput");
-const pickBtn = document.getElementById("pickBtn");
 const fileNameEl = document.getElementById("fileName");
 const preview = document.getElementById("preview");
 const uploadBtn = document.getElementById("uploadBtn");
@@ -41,22 +39,28 @@ function updateUIFromFile() {
   preview.src = URL.createObjectURL(selectedFile);
   preview.style.display = "block";
   uploadBtn.disabled = false;
+  setStatus("");
 }
 
-// Open picker
-pickBtn.addEventListener("click", () => {
-  photoInput.click();
-});
-
-// iPhone Chrome reliability: re-check file after change
-photoInput.addEventListener("change", () => {
+/**
+ * iPhone Chrome reliability trick:
+ * Sometimes the file appears slightly after the change event.
+ */
+function readFileFromInput() {
   selectedFile = photoInput.files && photoInput.files[0] ? photoInput.files[0] : null;
   updateUIFromFile();
+}
 
-  setTimeout(() => {
-    selectedFile = photoInput.files && photoInput.files[0] ? photoInput.files[0] : null;
-    updateUIFromFile();
-  }, 100);
+photoInput.addEventListener("change", () => {
+  readFileFromInput();
+  setTimeout(readFileFromInput, 80);
+  setTimeout(readFileFromInput, 200);
+});
+
+photoInput.addEventListener("input", () => {
+  readFileFromInput();
+  setTimeout(readFileFromInput, 80);
+  setTimeout(readFileFromInput, 200);
 });
 
 uploadBtn.addEventListener("click", async () => {
@@ -88,11 +92,13 @@ uploadBtn.addEventListener("click", async () => {
 
     setStatus(`✅ הועלה בהצלחה: ${data.objectName}`, "ok");
 
-    // Reset
+    // Reset for next upload
     selectedFile = null;
     photoInput.value = "";
     nameInput.value = "";
     updateUIFromFile();
+
+    setTimeout(() => setStatus(""), 3500);
   } catch (err) {
     setStatus(`❌ שגיאה: ${err.message}`, "err");
   } finally {

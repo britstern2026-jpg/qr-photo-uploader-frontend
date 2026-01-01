@@ -30,15 +30,14 @@
       <div class="field">
         <label>צילום / בחירת תמונה</label>
 
-        <!-- Hidden file input (best for iPhone Chrome) -->
-        <input id="photoInput" type="file" accept="image/*" hidden />
+        <!-- ✅ Real file input: must exist for iPhone Chrome -->
+        <input id="photoInput" type="file" accept="image/*" class="realFileInput" />
 
-        <!-- Custom button -->
-        <button id="pickBtn" class="btnSecondary" type="button">
+        <!-- ✅ Most reliable on iOS: use LABEL styled like a button -->
+        <label for="photoInput" id="pickBtn" class="btnSecondary">
           לבחור / לצלם תמונה
-        </button>
+        </label>
 
-        <!-- Filename display -->
         <div id="fileName" class="fileName">לא נבחרה תמונה</div>
 
         <small class="hint">כדי לצלם: בחרו “Camera / מצלמה”.</small>
