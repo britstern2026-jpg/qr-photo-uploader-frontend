@@ -116,6 +116,13 @@ body {
   margin: 12px 0;
 }
 
+.divider {
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+  margin: 20px 0;
+}
+
 label {
   font-size: 14px;
   color: var(--muted);
