@@ -1,13 +1,37 @@
+/*:root {*/
+/*  --bg1: #0b1020;*/
+/*  --bg2: #121a33;*/
+/*  --card: rgba(255, 255, 255, 0.08);*/
+/*  --cardBorder: rgba(255, 255, 255, 0.14);*/
+/*  --text: rgba(255, 255, 255, 0.92);*/
+/*  --muted: rgba(255, 255, 255, 0.72);*/
+/*  --hint: rgba(255, 255, 255, 0.55);*/
+/*  --accent: #7c5cff;*/
+/*  --accentBlue: #3b82f6;*/
+/*  --shadow: 0 20px 60px rgba(0,0,0,0.45);*/
+/*  --radius: 18px;*/
+/*}*/
 :root {
-  --bg1: #0b1020;
-  --bg2: #121a33;
-  --card: rgba(255, 255, 255, 0.08);
-  --cardBorder: rgba(255, 255, 255, 0.14);
+  /* ✅ Main brand color */
+  --accent: #EDE4B5;
+
+  /* ✅ Warm dark background */
+  --bg1: #120f0a;
+  --bg2: #1b1610;
+
+  /* ✅ Card + borders */
+  --card: rgba(255, 255, 255, 0.07);
+  --cardBorder: rgba(237, 228, 181, 0.18);
+
+  /* ✅ Text */
   --text: rgba(255, 255, 255, 0.92);
   --muted: rgba(255, 255, 255, 0.72);
   --hint: rgba(255, 255, 255, 0.55);
-  --accent: #7c5cff;
-  --accentBlue: #3b82f6;
+
+  /* ✅ Button secondary tone */
+  --accentBlue: #cbbf8d;
+
+  /* ✅ Shadow + radius */
   --shadow: 0 20px 60px rgba(0,0,0,0.45);
   --radius: 18px;
 }
@@ -38,9 +62,13 @@ body {
   background-clip: padding-box;
   position: relative;
 
+  /*background:*/
+  /*  radial-gradient(1200px 800px at 20% 0%, #22306a 0%, transparent 60%),*/
+  /*  radial-gradient(1000px 700px at 100% 30%, #5a2f79 0%, transparent 55%),*/
+  /*  linear-gradient(180deg, var(--bg1), var(--bg2));*/
   background:
-    radial-gradient(1200px 800px at 20% 0%, #22306a 0%, transparent 60%),
-    radial-gradient(1000px 700px at 100% 30%, #5a2f79 0%, transparent 55%),
+    radial-gradient(1200px 800px at 20% 0%, rgba(237, 228, 181, 0.18) 0%, transparent 60%),
+    radial-gradient(1000px 700px at 100% 30%, rgba(203, 191, 141, 0.18) 0%, transparent 55%),
     linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
@@ -209,8 +237,10 @@ input[type="text"]:focus {
   padding: 16px 14px;
   font-size: 16px;
   font-weight: 800;
-  color: white;
-  background: linear-gradient(135deg, var(--accent), var(--accentBlue));
+  /*color: white;*/
+  /*background: linear-gradient(135deg, var(--accent), var(--accentBlue));*/
+  background: linear-gradient(135deg, #EDE4B5, #CBBF8D);
+  color: #1b1610;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
