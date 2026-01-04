@@ -237,10 +237,10 @@ input[type="text"]:focus {
   padding: 16px 14px;
   font-size: 16px;
   font-weight: 800;
-  /*color: white;*/
+  color: white;
   /*background: linear-gradient(135deg, var(--accent), var(--accentBlue));*/
   background: linear-gradient(135deg, #EDE4B5, #CBBF8D);
-  color: #1b1610;
+  /*color: #1b1610;*/
   cursor: pointer;
   display: inline-flex;
   align-items: center;
