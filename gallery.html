@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>גלריה</title>
-  <link rel="stylesheet" href="style.css?v=3"/>
+  <link rel="stylesheet" href="style.css?v=4"/>
 </head>
 
 <body>
@@ -19,18 +19,47 @@
         חזרה להעלאה ⬅️
       </a>
 
-      <div id="galleryStatus" class="status">טוען תמונות...</div>
+      <!-- ✅ NEW: Filter by uploader -->
+      <div class="galleryControls">
+        <label class="galleryLabel" for="nameFilter">סינון לפי שם מעלה</label>
+        <select id="nameFilter" class="gallerySelect">
+          <option value="">הכל</option>
+        </select>
 
+        <button id="clearFilterBtn" class="btnSecondary galleryClearBtn" type="button">
+          נקה סינון
+        </button>
+      </div>
+
+      <div id="galleryStatus" class="status">טוען תמונות...</div>
       <div id="galleryCount" class="status"></div>
 
       <div id="galleryGrid" class="galleryGrid"></div>
 
       <footer class="footer">
-        <p class="tiny">גרסה: v6.3</p>
+        <p class="tiny">גרסה: v7</p>
       </footer>
     </section>
   </main>
 
-  <script src="gallery.js?v=3"></script>
+  <!-- ✅ NEW: Modal viewer (popup) -->
+  <div id="viewer" class="viewer hidden" aria-hidden="true">
+    <div class="viewerBackdrop" id="viewerBackdrop"></div>
+
+    <div class="viewerBody">
+      <button class="viewerClose" id="viewerClose" aria-label="סגור">✕</button>
+
+      <button class="viewerNav viewerPrev" id="viewerPrev" aria-label="קודם">‹</button>
+      <img id="viewerImg" class="viewerImg" alt="תמונה"/>
+      <button class="viewerNav viewerNext" id="viewerNext" aria-label="הבא">›</button>
+
+      <div class="viewerMeta">
+        <div id="viewerName" class="viewerName"></div>
+        <a id="viewerOpen" class="viewerOpen" href="#" target="_blank" rel="noopener">פתח מקור</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="gallery.js?v=4"></script>
 </body>
 </html>

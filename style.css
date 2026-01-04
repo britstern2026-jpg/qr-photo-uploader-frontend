@@ -382,3 +382,144 @@ label,
     transition: 120ms ease;
   }
 }
+
+/* =========================
+   GALLERY CONTROLS
+========================= */
+
+.galleryControls{
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.galleryLabel{
+  font-size: 14px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.gallerySelect{
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.60);
+  color: var(--text);
+  padding: 12px 12px;
+  font-size: 16px; /* prevents iPhone zoom */
+  outline: none;
+}
+
+.galleryClearBtn{
+  padding: 12px 14px;
+}
+
+/* Make photoCard button behave like a card */
+.photoCard{
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+}
+
+/* =========================
+   VIEWER MODAL
+========================= */
+
+.viewer{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.viewer.hidden{
+  display: none;
+}
+
+.viewerBackdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.70);
+}
+
+.viewerBody{
+  position: relative;
+  width: min(92vw, 900px);
+  height: min(82vh, 700px);
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(20,16,10,0.92);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 25px 80px rgba(0,0,0,0.55);
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.viewerImg{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: rgba(0,0,0,0.25);
+}
+
+.viewerClose{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.viewerNav{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 64px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  font-size: 34px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.viewerPrev{ right: 10px; }
+.viewerNext{ left: 10px; }
+
+.viewerMeta{
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: rgba(255,255,255,0.92);
+}
+
+.viewerName{
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+}
+
+.viewerOpen{
+  font-size: 14px;
+  color: #EDE4B5;
+  text-decoration: none;
+  border: 1px solid rgba(237,228,181,0.35);
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+
