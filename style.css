@@ -117,10 +117,11 @@ body {
 }
 
 .divider {
-  border: none;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.25);
-  margin: 20px 0;
+  border: 0;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.35);
+  margin: 24px 0;
+  width: 100%;
 }
 
 label {
