@@ -25,7 +25,6 @@ let currentIndex = -1;
 
 /* =========================
    ✅ OWNER MODE (NEW)
-   - owner.html saves password in localStorage
    - owner.html redirects to gallery.html?owner=1
    - ONLY then we send password header to backend
 ========================= */
@@ -34,7 +33,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const wantsOwnerMode = urlParams.get("owner") === "1";
 
 // Saved password from owner.html
-const savedPassword = localStorage.getItem("gallery_admin_pw") || "";
+const savedPassword = "1234";
 
 // Admin mode is enabled only if URL demands it AND password exists
 const adminMode = wantsOwnerMode && !!savedPassword;
