@@ -16,12 +16,12 @@
   --accent: #EDE4B5;
 
   /* ✅ Warm dark background */
-  --bg1: #120f0a;
-  --bg2: #1b1610;
+  --bg1: #5a4e34;
+  --bg2: #6a5c3f;
 
   /* ✅ Card + borders */
   --card: rgba(255, 255, 255, 0.07);
-  --cardBorder: rgba(237, 228, 181, 0.18);
+  --cardBorder: rgba(237, 228, 181, 0.30);
 
   /* ✅ Text */
   --text: rgba(255, 255, 255, 0.92);
@@ -68,7 +68,7 @@ body {
   /*  linear-gradient(180deg, var(--bg1), var(--bg2));*/
   background:
     radial-gradient(1200px 800px at 20% 0%, rgba(237, 228, 181, 0.18) 0%, transparent 60%),
-    radial-gradient(1000px 700px at 100% 30%, rgba(203, 191, 141, 0.18) 0%, transparent 55%),
+    radial-gradient(1000px 700px at 100% 30%, rgba(203, 191, 141, 0.28) 0%, transparent 55%),
     linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
@@ -237,10 +237,10 @@ input[type="text"]:focus {
   padding: 16px 14px;
   font-size: 16px;
   font-weight: 800;
-  color: white;
+  /*color: white;*/
   /*background: linear-gradient(135deg, var(--accent), var(--accentBlue));*/
   background: linear-gradient(135deg, #EDE4B5, #CBBF8D);
-  /*color: #1b1610;*/
+  color: #1b1610;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
