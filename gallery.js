@@ -23,8 +23,13 @@ let allPhotos = [];
 let filteredPhotos = [];
 let currentIndex = -1;
 
+/* ✅ OWNER MODE (NEW) */
+const urlParams = new URLSearchParams(window.location.search);
+const wantsOwnerMode = urlParams.get("owner") === "1";
+const savedPassword = localStorage.getItem("gallery_admin_pw") || "";
+const adminMode = wantsOwnerMode && !!savedPassword;
+
 function getUploaderFromFilename(filename) {
-  // expected: "<uploader>_<timestamp>.jpg"
   const idx = filename.indexOf("_");
   if (idx <= 0) return "ללא שם";
   return filename.slice(0, idx);
@@ -75,7 +80,6 @@ function renderGrid(list) {
   gridEl.innerHTML = "";
 
   list.forEach((p, i) => {
-    // ✅ button instead of <a> => no new window
     const card = document.createElement("button");
     card.type = "button";
     card.className = "photoCard";
@@ -126,15 +130,30 @@ async function loadPhotos() {
   countEl.textContent = "";
 
   try {
+    const headers = { "Accept": "application/json" };
+
+    // ✅ if owner mode -> send password
+    if (adminMode) {
+      headers["x-gallery-password"] = savedPassword;
+    }
 
     const res = await fetch(`${BACKEND_URL}/photos`, {
       method: "GET",
+      headers
     });
 
     const data = await res.json();
 
     if (!res.ok || !data.ok) {
       throw new Error(data.error || "Failed to load gallery");
+    }
+
+    // ✅ if user requested owner mode but password wrong -> redirect back
+    if (adminMode && !data.admin) {
+      localStorage.removeItem("gallery_admin_pw");
+      setStatus("❌ סיסמה לא נכונה. חוזר לעמוד הסיסמה.", "err");
+      setTimeout(() => window.location.href = "owner.html", 900);
+      return;
     }
 
     const photos = data.photos || [];
@@ -144,7 +163,6 @@ async function loadPhotos() {
       return;
     }
 
-    // ✅ attach uploader from filename
     allPhotos = photos.map(p => ({
       ...p,
       uploader: getUploaderFromFilename(p.name)
@@ -154,7 +172,9 @@ async function loadPhotos() {
     populateFilterOptions();
     filteredPhotos = [...allPhotos];
 
-    countEl.textContent = `✅ נמצאו ${allPhotos.length} תמונות`;
+    countEl.textContent = adminMode
+      ? `🔒 מצב בעל האירוע: ${allPhotos.length} תמונות`
+      : `✅ נמצאו ${allPhotos.length} תמונות`;
 
     renderGrid(filteredPhotos);
 
@@ -177,7 +197,6 @@ viewerBackdrop.addEventListener("click", closeViewer);
 viewerNext.addEventListener("click", showNext);
 viewerPrev.addEventListener("click", showPrev);
 
-// Keyboard support
 document.addEventListener("keydown", (e) => {
   if (viewer.classList.contains("hidden")) return;
   if (e.key === "Escape") closeViewer();
@@ -185,7 +204,6 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") showPrev();
 });
 
-// Touch swipe (simple)
 let touchStartX = 0;
 viewerImg.addEventListener("touchstart", (e) => {
   touchStartX = e.touches[0].clientX;
