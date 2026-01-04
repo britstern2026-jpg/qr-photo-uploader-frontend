@@ -118,9 +118,10 @@ body {
 
 .divider {
   border: 0;
-  height: 2px;
+  height: 1px;
   background: rgba(0, 0, 0, 0.35);
-  margin: 24px 0;
+  margin-top: 40px;
+  margin-bottom: 12px;
   width: 100%;
 }
 
