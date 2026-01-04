@@ -23,23 +23,6 @@ let allPhotos = [];
 let filteredPhotos = [];
 let currentIndex = -1;
 
-/* =========================
-   ✅ OWNER MODE (NEW)
-   - owner.html redirects to gallery.html?owner=1
-   - ONLY then we send password header to backend
-========================= */
-
-const urlParams = new URLSearchParams(window.location.search);
-const wantsOwnerMode = urlParams.get("owner") === "1";
-
-// Saved password from owner.html
-const savedPassword = "1234";
-
-// Admin mode is enabled only if URL demands it AND password exists
-const adminMode = wantsOwnerMode && !!savedPassword;
-
-/* ========================= */
-
 function getUploaderFromFilename(filename) {
   // expected: "<uploader>_<timestamp>.jpg"
   const idx = filename.indexOf("_");
@@ -139,41 +122,19 @@ function populateFilterOptions() {
 }
 
 async function loadPhotos() {
-  setStatus(adminMode ? "טוען תמונות (בעל האירוע)..." : "טוען תמונות...");
   gridEl.innerHTML = "";
   countEl.textContent = "";
 
   try {
-    // ✅ Build headers
-    const headers = { "Accept": "application/json" };
-
-    // ✅ If admin mode, send password to backend
-    if (adminMode) {
-      headers["x-gallery-password"] = savedPassword;
-    }
 
     const res = await fetch(`${BACKEND_URL}/photos`, {
       method: "GET",
-      headers
     });
 
     const data = await res.json();
 
     if (!res.ok || !data.ok) {
       throw new Error(data.error || "Failed to load gallery");
-    }
-
-    // ✅ If user tried owner mode but backend says not admin -> kick out
-    if (adminMode && !data.admin) {
-      localStorage.removeItem("gallery_admin_pw");
-      setStatus("❌ סיסמה לא נכונה. חזור ונסה שוב.", "err");
-
-      // redirect back to owner login page after 1 sec
-      setTimeout(() => {
-        window.location.href = "owner.html";
-      }, 1000);
-
-      return;
     }
 
     const photos = data.photos || [];
@@ -193,9 +154,7 @@ async function loadPhotos() {
     populateFilterOptions();
     filteredPhotos = [...allPhotos];
 
-    countEl.textContent = adminMode
-      ? `🔒 מצב בעל האירוע: ${allPhotos.length} תמונות`
-      : `✅ נמצאו ${allPhotos.length} תמונות`;
+    countEl.textContent = `✅ נמצאו ${allPhotos.length} תמונות`;
 
     renderGrid(filteredPhotos);
 
