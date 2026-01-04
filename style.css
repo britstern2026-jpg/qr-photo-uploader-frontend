@@ -324,9 +324,9 @@ label,
 .galleryGrid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 14px;
-  margin-top: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 4px;
+  margin-top: 16px;
 }
 
 /* Each card is a clickable tile */
@@ -352,13 +352,14 @@ label,
 
 /* Filename overlay instead of pushing layout */
 .photoMeta {
+  display: none;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
 
-  padding: 8px 10px;
-  font-size: 12px;
+  padding: 6px 6px;
+  font-size: 10px;
   line-height: 1.2;
   color: rgba(255, 255, 255, 0.9);
 
