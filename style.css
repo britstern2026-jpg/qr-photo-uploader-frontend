@@ -292,7 +292,7 @@ input[type="text"]:focus {
 .status.err { color: rgba(239, 68, 68, 0.95); }
 
 .footer {
-  margin-top: 16px;
+  margin-top: 8px;
   border-top: 1px solid rgba(255,255,255,0.10);
   padding-top: 12px;
 }
