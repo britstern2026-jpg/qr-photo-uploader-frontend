@@ -113,18 +113,27 @@ label {
   color: var(--muted);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   max-width: 100%;
   min-width: 0;
 
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.60);
   color: var(--text);
   padding: 14px 12px;
-  font-size: 16px; /* prevents iPhone zoom */
+
+  font-size: 16px; /* ✅ prevents iPhone zoom + tiny look */
+  line-height: 1.2;
+  font-weight: 600;
+
   outline: none;
+
+  /* ✅ iOS / Safari consistency */
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 input[type="text"]:focus {
