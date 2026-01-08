@@ -90,7 +90,7 @@ function renderGrid(list) {
     img.className = "photoImg";
     img.loading = "lazy";
     img.alt = p.name;
-    img.src = p.signedUrl;
+    img.src = p.signedThumbUrl || p.signedUrl;
 
     card.appendChild(img);
     gridEl.appendChild(card);
