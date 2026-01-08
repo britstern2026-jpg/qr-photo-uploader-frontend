@@ -70,7 +70,7 @@ function openViewer(index) {
 
   viewerImg.onerror = () => {
     viewerLoader.classList.add("hidden");
-    setStatus("❌ לא הצלחנו לטעון את התמונה", "err");
+    // setStatus("❌ לא הצלחנו לטעון את התמונה", "err");
   };
 
   // ✅ load full image
