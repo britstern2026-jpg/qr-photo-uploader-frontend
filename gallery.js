@@ -18,6 +18,7 @@ const viewerNext = document.getElementById("viewerNext");
 const viewerImg = document.getElementById("viewerImg");
 const viewerName = document.getElementById("viewerName");
 const viewerOpen = document.getElementById("viewerOpen");
+const viewerLoader = document.getElementById("viewerLoader");
 
 let allPhotos = [];
 let filteredPhotos = [];
@@ -47,22 +48,45 @@ function openViewer(index) {
   const p = filteredPhotos[currentIndex];
   if (!p) return;
 
-  viewerImg.src = p.signedUrl;
-  viewerImg.alt = p.name;
-  viewerName.textContent = p.uploader;
-  viewerOpen.href = p.signedUrl;
-
+  // ✅ show modal
   viewer.classList.remove("hidden");
   viewer.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
+
+  // ✅ show loader
+  viewerLoader.classList.remove("hidden");
+
+  // ✅ reset image first
+  viewerImg.src = "";
+  viewerImg.alt = p.name;
+
+  viewerName.textContent = p.uploader;
+  viewerOpen.href = p.signedUrl;
+
+  // ✅ hide loader only when full image is loaded
+  viewerImg.onload = () => {
+    viewerLoader.classList.add("hidden");
+  };
+
+  viewerImg.onerror = () => {
+    viewerLoader.classList.add("hidden");
+    setStatus("❌ לא הצלחנו לטעון את התמונה", "err");
+  };
+
+  // ✅ load full image
+  viewerImg.src = p.signedUrl;
 }
 
 function closeViewer() {
   viewer.classList.add("hidden");
   viewer.setAttribute("aria-hidden", "true");
+
   viewerImg.src = "";
+  viewerLoader.classList.add("hidden");
+
   document.body.style.overflow = "";
 }
+
 
 function showNext() {
   if (!filteredPhotos.length) return;
