@@ -555,6 +555,7 @@ label,
 }
 
 .viewerLoader{
+  pointer-events: none; /* ✅ allow clicking X / arrows while loading */
   position: absolute;
   inset: 0;
   display: grid;
