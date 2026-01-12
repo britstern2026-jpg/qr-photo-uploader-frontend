@@ -48,7 +48,6 @@ function openViewer(index) {
   const p = filteredPhotos[currentIndex];
   if (!p) return;
 
-  // ✅ show modal
   viewer.classList.remove("hidden");
   viewer.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
@@ -56,25 +55,26 @@ function openViewer(index) {
   // ✅ show loader
   viewerLoader.classList.remove("hidden");
 
-  // ✅ reset image first
+  // ✅ make sure the visible image is empty
   viewerImg.src = "";
   viewerImg.alt = p.name;
 
   viewerName.textContent = p.uploader;
   viewerOpen.href = p.signedUrl;
 
-  // ✅ hide loader only when full image is loaded
-  viewerImg.onload = () => {
+  // ✅ PRELOAD in memory (not on screen)
+  const pre = new Image();
+  pre.onload = () => {
+    // ✅ only now show the image
+    viewerImg.src = p.signedUrl;
     viewerLoader.classList.add("hidden");
   };
-
-  viewerImg.onerror = () => {
+  pre.onerror = () => {
     viewerLoader.classList.add("hidden");
-    // setStatus("❌ לא הצלחנו לטעון את התמונה", "err");
+    setStatus("❌ לא הצלחנו לטעון את התמונה", "err");
   };
 
-  // ✅ load full image
-  viewerImg.src = p.signedUrl;
+  pre.src = p.signedUrl;
 }
 
 function closeViewer() {
@@ -86,7 +86,6 @@ function closeViewer() {
 
   document.body.style.overflow = "";
 }
-
 
 function showNext() {
   if (!filteredPhotos.length) return;
