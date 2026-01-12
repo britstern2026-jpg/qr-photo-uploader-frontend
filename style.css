@@ -503,12 +503,18 @@ label,
   left: 10px;
   width: 42px;
   height: 42px;
+  padding: 0;
   border-radius: 999px;
+  display: grid;
+  place-items: center;
   border: 1px solid rgba(255,255,255,0.18);
   background: rgba(0,0,0,0.35);
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 1;
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .viewerNav{
