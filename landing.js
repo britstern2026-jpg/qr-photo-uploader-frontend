@@ -8,6 +8,14 @@ const statusEl = document.getElementById("status");
 const btnText = enterBtn.querySelector(".btnText");
 const spinner = enterBtn.querySelector(".spinner");
 
+const params = new URLSearchParams(window.location.search);
+const k = (params.get("k") || "").trim();
+
+if (k && k === LANDING_PASSWORD) {
+  localStorage.setItem("landing_ok", "1");
+  window.location.href = "index.html";
+}
+
 function setStatus(msg, type = "") {
   statusEl.textContent = msg || "";
   statusEl.classList.remove("ok", "err");
