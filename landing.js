@@ -1,4 +1,4 @@
-const LANDING_PASSWORD = "1234"; // ✅ change this
+const LANDING_PASSWORD = "4506";
 const REDIRECT_TO = "index.html";
 
 const pwInput = document.getElementById("pw");
@@ -35,7 +35,7 @@ function tryEnter() {
   }
 
   setLoading(true);
-  setStatus("✅ הצלחה! מעביר...", "ok");
+  setStatus("✅ סיסמא נכונה...", "ok");
 
   // ✅ Save “logged in” flag for this browser
   localStorage.setItem("landing_ok", "1");
