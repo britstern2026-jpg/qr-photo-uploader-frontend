@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>כניסה</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body>
+  <main class="page">
+    <section class="card">
+      <header class="header">
+        <h1>כניסה 🔒</h1>
+        <p class="subtitle">הזינו סיסמה כדי להמשיך.</p>
+      </header>
+
+      <div class="field">
+        <label for="pw">סיסמה</label>
+        <input id="pw" type="password" placeholder="הזן סיסמה" autocomplete="off" />
+      </div>
+
+      <button id="enterBtn" class="btn" type="button">
+        <span class="btnText">כניסה</span>
+        <span class="spinner" aria-hidden="true"></span>
+      </button>
+
+      <p id="status" class="status"></p>
+
+      <footer class="footer">
+        <p class="tiny">גרסה: landing-v1</p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="landing.js"></script>
+</body>
+</html>

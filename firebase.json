@@ -39,12 +39,19 @@
       },
       {
         "source": "/gallery.html",
-        "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }]
+        "headers": [
+          { "key": "Cache-Control", "value": "no-store, max-age=0" }
+        ]
       },
       {
         "source": "/gallery.js",
-        "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }]
+        "headers": [
+          { "key": "Cache-Control", "value": "no-store, max-age=0" }
+        ]
       }
+    ],
+    "rewrites": [
+      { "source": "/", "destination": "/landing.html" }
     ]
   }
 }

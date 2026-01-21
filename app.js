@@ -14,6 +14,11 @@ const spinner = uploadBtn.querySelector(".spinner");
 let selectedFile = null;
 let uploading = false;
 
+// ✅ simple gate: require landing password first
+if (localStorage.getItem("landing_ok") !== "1") {
+  window.location.href = "landing.html";
+}
+
 function setStatus(msg, type = "") {
   statusEl.textContent = msg || "";
   statusEl.classList.remove("ok", "err");
