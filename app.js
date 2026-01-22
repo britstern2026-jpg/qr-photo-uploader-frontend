@@ -106,7 +106,7 @@ function uploadWithProgress(formData) {
       const pct = Math.max(1, Math.min(99, Math.round((e.loaded / e.total) * 100)));
 
       // Keep spinner + disable button via setUploading(true)
-      setStatus(`מעלה... ${pct}%`);
+      setStatus(`מע1לה... ${pct}%`);
       btnText.textContent = `מעלה... ${pct}%`;
     };
 
