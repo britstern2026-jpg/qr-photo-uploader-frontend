@@ -88,6 +88,53 @@ async function compressImage(file) {
   });
 }
 
+/**
+ * ✅ Upload with real progress (better UX on slow networks)
+ * Uses XHR because fetch() doesn't provide upload progress events.
+ */
+function uploadWithProgress(formData) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `${BACKEND_URL}/upload`, true);
+
+    // Optional: helps backend know we want JSON
+    xhr.setRequestHeader("Accept", "application/json");
+
+    xhr.upload.onprogress = (e) => {
+      if (!e.lengthComputable) return;
+
+      const pct = Math.max(1, Math.min(99, Math.round((e.loaded / e.total) * 100)));
+
+      // Keep spinner + disable button via setUploading(true)
+      setStatus(`מעלה... ${pct}%`);
+      btnText.textContent = `מעלה... ${pct}%`;
+    };
+
+    xhr.onload = () => {
+      // Try parse JSON even on non-200 to extract error message
+      let data = null;
+      try {
+        data = JSON.parse(xhr.responseText || "{}");
+      } catch (_) {
+        // If backend returns HTML or something unexpected
+        return reject(new Error("תגובה לא תקינה מהשרת"));
+      }
+
+      if (xhr.status >= 200 && xhr.status < 300 && data && data.ok) {
+        return resolve(data);
+      }
+
+      const msg = (data && data.error) ? data.error : "העלאה נכשלה";
+      return reject(new Error(msg));
+    };
+
+    xhr.onerror = () => reject(new Error("שגיאת רשת. נסו שוב."));
+    xhr.ontimeout = () => reject(new Error("תם הזמן להעלאה. נסו שוב."));
+    xhr.timeout = 120000; // 2 minutes (adjust if you want)
+
+    xhr.send(formData);
+  });
+}
 
 photoInput.addEventListener("change", () => {
   readFileFromInput();
@@ -113,37 +160,39 @@ uploadBtn.addEventListener("click", async () => {
   const safeName = rawName.length ? rawName : "ללא שם";
 
   const formData = new FormData();
-  const compressedBlob = await compressImage(selectedFile);
-  formData.append("photo", compressedBlob, "photo.jpg");
-  formData.append("name", safeName);
-
-  // ✅ send visibility
-  formData.append("visibility", publicCheckbox.checked ? "public" : "private");
 
   try {
+    // ✅ Compress first (already improves speed)
+    setStatus("מכין תמונה...");
+    const compressedBlob = await compressImage(selectedFile);
+    if (!compressedBlob) throw new Error("לא ניתן לדחוס את התמונה");
+
+    formData.append("photo", compressedBlob, "photo.jpg");
+    formData.append("name", safeName);
+    formData.append("visibility", publicCheckbox.checked ? "public" : "private");
+
     setUploading(true);
     setStatus("מעלה...");
 
-    const res = await fetch(`${BACKEND_URL}/upload`, {
-      method: "POST",
-      body: formData,
-    });
+    // ✅ Use progress upload
+    await uploadWithProgress(formData);
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "העלאה נכשלה");
-
-    setStatus(`✅ הועלה בהצלחה`, "ok");
+    setStatus("✅ הועלה בהצלחה", "ok");
 
     // Reset for next upload
     selectedFile = null;
     photoInput.value = "";
     nameInput.value = "";
-    publicCheckbox.checked = true; // ✅ reset default to everyone
+    publicCheckbox.checked = true; // default to everyone
     updateUIFromFile();
+
+    // Restore button text (in case progress overwrote it)
+    btnText.textContent = "העלאה";
 
     setTimeout(() => setStatus(""), 3500);
   } catch (err) {
     setStatus(`❌ שגיאה: ${err.message}`, "err");
+    btnText.textContent = "העלאה";
   } finally {
     setUploading(false);
   }
