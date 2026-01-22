@@ -78,7 +78,7 @@ uploadBtn.addEventListener("click", async () => {
   }
 
   const rawName = (nameInput.value || "").trim();
-  const safeName = rawName.length ? rawName : "תמונה";
+  const safeName = rawName.length ? rawName : "ללא שם";
 
   const formData = new FormData();
   formData.append("photo", selectedFile);

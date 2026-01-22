@@ -356,7 +356,6 @@ label,
   height: 100%;
   object-fit: cover;            /* ✅ no distortion, crops nicely */
   display: block;
-  image-orientation: from-image;
 }
 
 /* Filename overlay instead of pushing layout */
@@ -496,7 +495,6 @@ label,
   object-fit: contain;
   display: block;
   background: rgba(0,0,0,0.25);
-  image-orientation: from-image;
 }
 
 .viewerClose{
