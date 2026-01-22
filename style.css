@@ -356,6 +356,7 @@ label,
   height: 100%;
   object-fit: cover;            /* ✅ no distortion, crops nicely */
   display: block;
+  image-orientation: from-image;
 }
 
 /* Filename overlay instead of pushing layout */
