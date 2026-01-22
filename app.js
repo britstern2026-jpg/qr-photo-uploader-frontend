@@ -57,6 +57,38 @@ function readFileFromInput() {
   updateUIFromFile();
 }
 
+async function compressImage(file) {
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
+  await img.decode();
+
+  const maxSize = 1600; // px
+  let { width, height } = img;
+
+  if (width > height && width > maxSize) {
+    height *= maxSize / width;
+    width = maxSize;
+  } else if (height > maxSize) {
+    width *= maxSize / height;
+    height = maxSize;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, width, height);
+
+  return new Promise((resolve) => {
+    canvas.toBlob(
+      (blob) => resolve(blob),
+      "image/jpeg",
+      0.75 // quality (sweet spot)
+    );
+  });
+}
+
+
 photoInput.addEventListener("change", () => {
   readFileFromInput();
   setTimeout(readFileFromInput, 80);
@@ -81,7 +113,8 @@ uploadBtn.addEventListener("click", async () => {
   const safeName = rawName.length ? rawName : "ללא שם";
 
   const formData = new FormData();
-  formData.append("photo", selectedFile);
+  const compressedBlob = await compressImage(selectedFile);
+  formData.append("photo", compressedBlob, "photo.jpg");
   formData.append("name", safeName);
 
   // ✅ send visibility
