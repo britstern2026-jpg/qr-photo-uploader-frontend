@@ -106,7 +106,8 @@ function uploadWithProgress(formData) {
       const pct = Math.max(1, Math.min(99, Math.round((e.loaded / e.total) * 100)));
 
       // Keep spinner + disable button via setUploading(true)
-      setStatus(`מע1לה... ${pct}%`);
+      setStatus(`מעלה את התמונה לגלריה
+      ניתן לסגור את המסך, זה לא יעצור את הטעינה`);
       btnText.textContent = `מעלה... ${pct}%`;
     };
 
